@@ -117,9 +117,13 @@ public class IngredientServiceImpl implements IngredientService {
                 }
             } else {
                 //add new Ingredient
-                UnitOfMeasure uom = unitOfMeasureRepository.findById(command.getUom().getId()).block();
-                UnitOfMeasureCommand uomCommand = new UnitOfMeasureCommand(uom.getId(), uom.getDescription());
-                command.setUom(uomCommand);
+                Mono<UnitOfMeasure> uom = unitOfMeasureRepository.findById(command.getUom().getId());
+                if (uom.block() != null) {
+                    UnitOfMeasureCommand uomCommand = new UnitOfMeasureCommand(uom.block().getId(), uom.block().getDescription());
+                    command.setUom(uomCommand);
+                } else {
+                    UnitOfMeasureCommand uomCommand = new UnitOfMeasureCommand(command.getId(), command.getDescription());
+                }
                 Ingredient ingredient = ingredientCommandToIngredient.convert(command);
               //  ingredient.setRecipe(recipe);
                 recipe.addIngredient(ingredient);
