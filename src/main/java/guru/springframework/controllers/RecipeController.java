@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
@@ -70,7 +71,7 @@ public class RecipeController {
 
         log.debug("Deleting id: " + id);
 
-        recipeService.deleteById(id);
+        Mono<Void> returnedRes = recipeService.deleteById(id);
         return "redirect:/";
     }
 
