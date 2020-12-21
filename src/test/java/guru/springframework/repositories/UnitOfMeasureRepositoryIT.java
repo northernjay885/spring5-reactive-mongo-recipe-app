@@ -48,7 +48,7 @@ public class UnitOfMeasureRepositoryIT {
         unitOfMeasureRepository.deleteAll();
         categoryRepository.deleteAll();
 
-        RecipeBootstrap recipeBootstrap = new RecipeBootstrap(categoryRepository, recipeRepository, unitOfMeasureRepository, unitOfMeasureReactiveRepository, recipeReactiveRepository, categoryReactiveRepository);
+        RecipeBootstrap recipeBootstrap = new RecipeBootstrap(categoryRepository, recipeRepository, unitOfMeasureRepository);
 
         recipeBootstrap.onApplicationEvent(null);
     }

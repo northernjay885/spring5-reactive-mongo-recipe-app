@@ -37,9 +37,9 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Mono<Recipe> findById(String id) {
-        if (recipeReactiveRepository.findById(id).block() == null) {
-            throw new NotFoundException("recipe is not found");
-        }
+//        if (recipeReactiveRepository.findById(id).block() == null) {
+//            throw new NotFoundException("recipe is not found");
+//        }
         return recipeReactiveRepository.findById(id);
     }
 
@@ -66,8 +66,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Mono<Void> deleteById(String idToDelete) {
-        recipeReactiveRepository.deleteById(idToDelete).block();
-
+        recipeReactiveRepository.deleteById(idToDelete).subscribe();
         return Mono.empty();
     }
 }

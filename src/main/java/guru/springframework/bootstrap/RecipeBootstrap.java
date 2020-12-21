@@ -29,22 +29,11 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
 
-    private final UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
-    private final RecipeReactiveRepository recipeReactiveRepository;
-    private final CategoryReactiveRepository categoryReactiveRepository;
-
     public RecipeBootstrap(CategoryRepository categoryRepository,
-                           RecipeRepository recipeRepository,
-                           UnitOfMeasureRepository unitOfMeasureRepository,
-                           UnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository,
-                           RecipeReactiveRepository recipeReactiveRepository,
-                           CategoryReactiveRepository categoryReactiveRepository) {
+                           RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
         this.categoryRepository = categoryRepository;
         this.recipeRepository = recipeRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
-        this.unitOfMeasureReactiveRepository = unitOfMeasureReactiveRepository;
-        this.recipeReactiveRepository = recipeReactiveRepository;
-        this.categoryReactiveRepository = categoryReactiveRepository;
     }
 
     @Override
