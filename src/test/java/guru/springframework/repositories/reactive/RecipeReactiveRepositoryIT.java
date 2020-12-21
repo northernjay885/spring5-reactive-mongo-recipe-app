@@ -33,7 +33,4 @@ public class RecipeReactiveRepositoryIT {
 
         assertEquals(Long.valueOf(1L), count);
     }
-
-
-
 }

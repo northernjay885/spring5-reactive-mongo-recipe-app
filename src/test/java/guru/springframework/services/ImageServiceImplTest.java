@@ -12,8 +12,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
 
-import java.util.Optional;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -41,7 +39,6 @@ public class ImageServiceImplTest {
 
         Recipe recipe = new Recipe();
         recipe.setId(id);
-        Optional<Recipe> recipeOptional = Optional.of(recipe);
 
         when(recipeRepository.findById(anyString())).thenReturn(Mono.just(recipe));
         when(recipeRepository.save(any(Recipe.class))).thenReturn(Mono.just(recipe));

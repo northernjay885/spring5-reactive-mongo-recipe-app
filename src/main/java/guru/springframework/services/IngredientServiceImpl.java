@@ -40,15 +40,17 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Mono<IngredientCommand> findByRecipeIdAndIngredientId(String recipeId, String ingredientId) {
 
-          return recipeReactiveRepository.findById(recipeId)
-                  .flatMapIterable(Recipe::getIngredients)
-                  .filter(ingredient -> ingredient.getId().equalsIgnoreCase(ingredientId))
-                  .single()
-                  .map(ingredient -> {
-                      IngredientCommand command = ingredientToIngredientCommand.convert(ingredient);
-                      command.setRecipeId(recipeId);
-                      return command;
-                  });
+        return recipeReactiveRepository.findById(recipeId)
+                .map(recipe -> recipe.getIngredients()
+                        .stream()
+                        .filter(ingredient -> ingredient.getId().equalsIgnoreCase(ingredientId))
+                        .findFirst())
+                .filter(Optional::isPresent)
+                .map(ingredient -> {
+                    IngredientCommand command = ingredientToIngredientCommand.convert(ingredient.get());
+                    command.setRecipeId(recipeId);
+                    return command;
+                });
 
 
 //        return recipeReactiveRepository.findById(recipeId)
@@ -129,16 +131,16 @@ public class IngredientServiceImpl implements IngredientService {
                 recipe.addIngredient(ingredient);
             }
 
-            Mono<Recipe> savedRecipe = recipeReactiveRepository.save(recipe);
+            Recipe savedRecipe = recipeReactiveRepository.save(recipe).block();
 
-            Optional<Ingredient> savedIngredientOptional = savedRecipe.block().getIngredients().stream()
+            Optional<Ingredient> savedIngredientOptional = savedRecipe.getIngredients().stream()
                     .filter(recipeIngredients -> recipeIngredients.getId().equals(command.getId()))
                     .findFirst();
 
             //check by description
-            if(!savedIngredientOptional.isPresent()){
+            if (!savedIngredientOptional.isPresent()) {
                 //not totally safe... But best guess
-                savedIngredientOptional = savedRecipe.block().getIngredients().stream()
+                savedIngredientOptional = savedRecipe.getIngredients().stream()
                         .filter(recipeIngredients -> recipeIngredients.getDescription().equals(command.getDescription()))
                         .filter(recipeIngredients -> recipeIngredients.getAmount().equals(command.getAmount()))
                         .filter(recipeIngredients -> recipeIngredients.getUom().getId().equals(command.getUom().getId()))
@@ -182,6 +184,7 @@ public class IngredientServiceImpl implements IngredientService {
         } else {
             log.debug("Recipe Id Not found. Id:" + recipeId);
         }
+
         return Mono.empty();
     }
 }

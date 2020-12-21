@@ -11,7 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-
 @RunWith(SpringRunner.class)
 @DataMongoTest
 public class CategoryReactiveRepositoryIT {
@@ -20,7 +19,7 @@ public class CategoryReactiveRepositoryIT {
     CategoryReactiveRepository categoryReactiveRepository;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         categoryReactiveRepository.deleteAll().block();
     }
 
@@ -41,12 +40,10 @@ public class CategoryReactiveRepositoryIT {
         Category category = new Category();
         category.setDescription("Foo");
 
-        categoryReactiveRepository.save(category).block();
+        categoryReactiveRepository.save(category).then().block();
 
         Category fetchedCat = categoryReactiveRepository.findByDescription("Foo").block();
 
         assertNotNull(fetchedCat.getId());
-
     }
-
 }
