@@ -1,13 +1,10 @@
 package guru.springframework.services;
 
 import guru.springframework.commands.IngredientCommand;
-import guru.springframework.commands.UnitOfMeasureCommand;
 import guru.springframework.converters.IngredientCommandToIngredient;
 import guru.springframework.converters.IngredientToIngredientCommand;
 import guru.springframework.domain.Ingredient;
 import guru.springframework.domain.Recipe;
-import guru.springframework.domain.UnitOfMeasure;
-import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.repositories.reactive.RecipeReactiveRepository;
 import guru.springframework.repositories.reactive.UnitOfMeasureReactiveRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -119,15 +116,16 @@ public class IngredientServiceImpl implements IngredientService {
                 }
             } else {
                 //add new Ingredient
-                Mono<UnitOfMeasure> uom = unitOfMeasureRepository.findById(command.getUom().getId());
-                if (uom.block() != null) {
-                    UnitOfMeasureCommand uomCommand = new UnitOfMeasureCommand(uom.block().getId(), uom.block().getDescription());
-                    command.setUom(uomCommand);
-                } else {
-                    UnitOfMeasureCommand uomCommand = new UnitOfMeasureCommand(command.getId(), command.getDescription());
-                }
-                Ingredient ingredient = ingredientCommandToIngredient.convert(command);
+//                Mono<UnitOfMeasure> uom = unitOfMeasureRepository.findById(command.getUom().getId());
+//                if (uom.block() != null) {
+//                    UnitOfMeasureCommand uomCommand = new UnitOfMeasureCommand(uom.block().getId(), uom.block().getDescription());
+//                    command.setUom(uomCommand);
+//                } else {
+//                    UnitOfMeasureCommand uomCommand = new UnitOfMeasureCommand(command.getId(), command.getDescription());
+//                }
+//                Ingredient ingredient = ingredientCommandToIngredient.convert(command);
               //  ingredient.setRecipe(recipe);
+                Ingredient ingredient = ingredientCommandToIngredient.convert(command);
                 recipe.addIngredient(ingredient);
             }
 

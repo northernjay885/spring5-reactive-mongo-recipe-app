@@ -23,10 +23,11 @@ public class UnitOfMeasureServiceImpl implements UnitOfMeasureService {
     @Override
     public Flux<UnitOfMeasureCommand> listAllUoms() {
 
-        return unitOfMeasureReactiveRepository
+       return unitOfMeasureReactiveRepository
                 .findAll()
                 .map(unitOfMeasureToUnitOfMeasureCommand::convert);
-//        return StreamSupport.stream(unitOfMeasureRepository.findAll()
+
+//        return StreamSupport.stream(unitOfMeasureReactiveRepository.findAll()
 //                .spliterator(), false)
 //                .map(unitOfMeasureToUnitOfMeasureCommand::convert)
 //                .collect(Collectors.toSet());
